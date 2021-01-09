@@ -6,7 +6,25 @@
 
 This data visualization project shows the top countries and diplomatic relations mentioned by *Donald Trump* in his presidential term from 2017 to 2020. The related data are from his *Twitter*, speech transcripts and the *State of the Union Address*.
 
-All processes are finished by *Python*. There is no third-party data platform involving in.
+All processes are finished by *Python*. There is no third-party data platform involved.
+
+## Getting Started
+
+### Prerequisites
+
+- Install [*Python 3.10*](https://www.python.org/).
+
+- Install all dependencies.
+
+  ```bash
+  pip install -r requirements.txt
+  ```
+
+### Running
+
+```bash
+python main.py
+```
 
 ## Datasets
 
