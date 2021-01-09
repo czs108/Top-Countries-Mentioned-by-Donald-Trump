@@ -1,29 +1,23 @@
 import json
 import logging
 from pathlib import Path
+from typing import TYPE_CHECKING
 
-from clean.tuple import PathTuple as CleanerPathTuple
-from clean.standard import Standard
-from clean.segment import Segment
+from country import Container as CountryContainer
+from clean import PathTuple as CleanerPathTuple, Standard, Segment
+from counter import Director, NormalCounter, DiplomacyCounter
+from visualize.loader import PathTuple as LoaderPathTuple, NormalLoader, DiplomacyLoader
+from visualize.graph import BarChart, Sankey, FlowMap
 
-from analysis.country.container import CountryContainer
-from analysis.counter.normal import NormalCounter
-from analysis.counter.diplomacy import DiplomacyCounter
-from analysis.counter.counter import Director, Counter
-
-from visualize.loader.loader import PathTuple as LoaderPathTuple
-from visualize.loader.normal import NormalLoader
-from visualize.loader.diplomacy import DiplomacyLoader
-from visualize.barchart import BarChart
-from visualize.sankey import Sankey
-from visualize.flowmap import FlowMap
+if TYPE_CHECKING:
+    from counter import Counter
 
 
 JSON_INDENT = 4
 
 data_dir = Path("..", "data")
 
-countries = CountryContainer(Path("analysis", "country", "data.json"))
+countries = CountryContainer(Path("countries.json"))
 
 
 def clean() -> None:

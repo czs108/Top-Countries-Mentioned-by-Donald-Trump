@@ -3,12 +3,12 @@ from pathlib import Path
 
 
 class Location:
-    def __init__(self, latitude: int, longitude: int) -> None:
-        self.latitude: int = latitude
-        self.longitude: int = longitude
+    def __init__(self, latitude: float, longitude: float) -> None:
+        self.latitude: float = latitude
+        self.longitude: float = longitude
 
 
-class CountryContainer:
+class Container:
     def __init__(self, path: Path) -> None:
         """
         Store and check countries' information.
@@ -21,11 +21,11 @@ class CountryContainer:
             if type(country["country"]) is str:
                 name = country["country"]
                 self._synonyms[name.upper()] = name
-                self._locations[name] = Location(int(country["latitude"]), int(country["longitude"]))
+                self._locations[name] = Location(country["latitude"], country["longitude"])
             else:
                 names = country["country"]
                 main_name = names[0]
-                self._locations[main_name] = Location(int(country["latitude"]), int(country["longitude"]))
+                self._locations[main_name] = Location(country["latitude"], country["longitude"])
                 for i in range(0, len(names)):
                     self._synonyms[names[i].upper()] = main_name
 
