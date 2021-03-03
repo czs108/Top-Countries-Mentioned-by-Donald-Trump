@@ -1,5 +1,6 @@
 from typing import TYPE_CHECKING
 from pathlib import Path
+import os
 
 import pandas as pd
 
@@ -146,7 +147,7 @@ class Segment:
     def _separate(self, data: pd.DataFrame) -> None:
         for row in data.itertuples():
             try:
-                self._get_file(row.Index.year).write(row.content + "\n")
+                self._get_file(row.Index.year).write(row.content + os.linesep)
             except BaseException as err:
                 print(err)
 
