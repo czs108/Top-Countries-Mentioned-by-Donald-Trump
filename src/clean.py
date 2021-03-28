@@ -43,12 +43,22 @@ class Standard:
     """
     Unify the form of datasets, only remaining the "date" and "content" columns.
     """
-    def __init__(self, paths: PathTuple, out_dir: Path) -> None:
-        self._paths: PathTuple = paths
+    def __init__(self, in_paths: PathTuple, out_dir: Path) -> None:
+        """
+        The constructor.
+
+        -- PARAMETERS --
+        in_paths: The paths of original datasets.
+        out_dir: A directory used to store standard datasets.
+        """
+        self._in_paths: PathTuple = in_paths
         self._out_dir: Path = out_dir
         self._data: DataFrameTuple = DataFrameTuple()
 
     def handle(self) -> DataFrameTuple:
+        """
+        Handle each dataset.
+        """
         if not self._out_dir.exists():
             self._out_dir.mkdir(parents=True)
 
@@ -58,32 +68,32 @@ class Standard:
         return self._data
 
     def _handle_trump_tweet(self) -> None:
-        data = pd.read_csv(self._paths.trump_tweet)
+        data = pd.read_csv(self._in_paths.trump_tweet)
         res = data.loc[:, ["date", "content"]]
         res["date"] = res["date"].str[:10]
 
         res = self._remove_irrelevance(res)
         self._data.trump_tweet = res
-        self._write_csv_file(res, self._out_dir, Path(self._paths.trump_tweet).name)
+        self._write_csv_file(res, self._out_dir, Path(self._in_paths.trump_tweet).name)
 
     def _handle_president_speech(self) -> None:
-        data = pd.read_csv(self._paths.president_speech)
+        data = pd.read_csv(self._in_paths.president_speech)
         res = data.loc[data["President"] == "Donald Trump", ["Date", "Transcript"]]
         res.rename(columns={"Date": "date", "Transcript": "content"}, inplace=True)
 
         res = self._remove_irrelevance(res)
         self._data.president_speech = res
-        self._write_csv_file(res, self._out_dir, Path(self._paths.president_speech).name)
+        self._write_csv_file(res, self._out_dir, Path(self._in_paths.president_speech).name)
 
     def _handle_state_of_union_address(self) -> None:
-        data = pd.read_csv(self._paths.state_of_union_address)
+        data = pd.read_csv(self._in_paths.state_of_union_address)
         res = data.loc[data["President"] == "Donald Trump", ["Year", "Text"]]
         res.rename(columns={"Year": "date", "Text": "content"}, inplace=True)
         res["date"] = pd.to_datetime(res["date"], format="%Y").dt.strftime("%Y-01-01")
 
         res = self._remove_irrelevance(res)
         self._data.state_of_union_address = res
-        self._write_csv_file(res, self._out_dir, Path(self._paths.state_of_union_address).name)
+        self._write_csv_file(res, self._out_dir, Path(self._in_paths.state_of_union_address).name)
 
     @staticmethod
     def _remove_irrelevance(data: pd.DataFrame) -> pd.DataFrame:
@@ -94,18 +104,29 @@ class Standard:
         return data[f"{BEGIN_YEAR}":f"{END_YEAR}"]
 
     @staticmethod
-    def _write_csv_file(data: pd.DataFrame, out_dir: Path, name: str) -> None:
+    def _write_csv_file(data: pd.DataFrame, dir: Path, name: str) -> None:
         """
         Write a dataframe to a CSV file.
+
+        -- PARAMETERS --
+        data: A dataframe.
+        dir: A directory to store the file.
+        name: The name of the file.
         """
-        data.to_csv(out_dir.joinpath(name), index=True)
+        data.to_csv(dir.joinpath(name), index=True)
 
 
 class Segment:
     """
-    Separate contents into different files by year.
+    Separate datasets into different annual files.
     """
     def __init__(self, out_dir: Path) -> None:
+        """
+        The constructor.
+
+        -- PARAMETERS --
+        out_dir: An output directory used to store annual files.
+        """
         self._data: DataFrameTuple = None
         self._annual_files: dict[int, TextIO] = {}
         self._out_dir: Path = out_dir
@@ -145,6 +166,9 @@ class Segment:
         self._separate(self._data.state_of_union_address)
 
     def _separate(self, data: pd.DataFrame) -> None:
+        """
+        Separate a dataframe into different annual files.
+        """
         for row in data.itertuples():
             try:
                 self._get_file(row.Index.year).write(row.content + os.linesep)
@@ -152,11 +176,17 @@ class Segment:
                 print(err)
 
     def _get_file(self, year: int) -> TextIO:
+        """
+        Get the annual file corresponding to a specific year.
+        """
         if year not in self._annual_files:
             self._annual_files[year] = self._out_dir.joinpath(f"{year}.txt").open("w", encoding="utf-8")
         return self._annual_files[year]
 
     def _close_files(self) -> None:
+        """
+        Close all files.
+        """
         for file in self._annual_files.values():
             file.close()
         self._annual_files.clear()

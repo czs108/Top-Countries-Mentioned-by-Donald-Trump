@@ -1,22 +1,25 @@
 from pathlib import Path
 from typing import TYPE_CHECKING
+import collections as clc
 
 import nltk
 import spacy
 
 from country import Container
+from presidential_term import BEGIN_YEAR, END_YEAR
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
 
 
-Count = dict[str, int]
-
-
 class Counter:
     def handle(self, year: int, nouns: Sequence[str]) -> None:
         """
-        Handle nouns in a sentence related to a specific year.
+        Handle nouns in a sentence corresponding to a specific year.
+
+        -- PARAMETERS --
+        year: A year.
+        nouns: A noun list.
         """
         assert False
 
@@ -42,6 +45,13 @@ class Director:
     _SENTENCE_CLUSTER: int = 3
 
     def __init__(self, in_dir: Path, counters: Sequence[Counter]) -> None:
+        """
+        The constructor.
+
+        -- PARAMETERS --
+        in_dir: The directory of annual files.
+        counters: A counter list. The nouns in each sentence will be sent to these counters.
+        """
         self._in_dir: Path = in_dir
         self._counters: Sequence[Counter] = counters
         self._nlp = spacy.load("en_core_web_sm")
@@ -68,10 +78,16 @@ class NormalCounter(Counter):
     Count the number of times each country has been mentioned.
     """
     def __init__(self, countries: Container) -> None:
+        """
+        The constructor.
+
+        -- PARAMETERS --
+        countries: A country container.
+        """
         super().__init__()
         self._countries: Container = countries
-        self._total: Count = {}
-        self._annual: dict[int, Count] = {}
+        self._total: clc.Counter = clc.Counter()
+        self._annual: dict[int, clc.Counter] = {year: clc.Counter() for year in range(BEGIN_YEAR, END_YEAR + 1)}
 
     def handle(self, year: int, nouns: Sequence[str]) -> None:
         for word in nouns:
@@ -79,41 +95,40 @@ class NormalCounter(Counter):
                 self.add_record(year, word)
 
     def add_record(self, year: int, country: str, count: int = 1) -> None:
+        """
+        Add a new record.
+
+        -- PARAMETERS --
+        year: A year.
+        country: A country.
+        count: The number of count increase.
+        """
         country = self._countries.main_name(country)
-        self._init_dict(year, country)
         self._total[country] += count
         self._annual[year][country] += count
 
     @property
-    def total(self) -> Count:
+    def total(self) -> clc.Counter:
         return self._total
 
     @property
-    def annual(self) -> dict[int, Count]:
+    def annual(self) -> dict[int, clc.Counter]:
         return self._annual
-
-    def _init_dict(self, year: int, country: str) -> None:
-        if country not in self._total:
-            self._total[country] = 0
-        if year not in self._annual:
-            self._annual[year] = {}
-        if country not in self._annual[year]:
-            self._annual[year][country] = 0
 
 
 class DiplomacyCounter(Counter):
     """
-    Count the number of times each diplomatic relation has been mentioned.
+    Count the numbers of times each country and diplomatic relation have been mentioned.
     """
     def __init__(self, countries: Container, normal: NormalCounter) -> None:
         super().__init__()
         self._countries: Container = countries
         self._normal: NormalCounter = normal
-        self._total: dict[str, Count] = {}
-        self._annual: dict[int, dict[str, Count]] = {}
+        self._total: dict[str, clc.Counter] = {}
+        self._annual: dict[int, dict[str, clc.Counter]] = {year: {} for year in range(BEGIN_YEAR, END_YEAR + 1)}
 
     def handle(self, year: int, nouns: Sequence[str]) -> None:
-        countries: Count = {}
+        countries: clc.Counter = clc.Counter()
         for word in nouns:
             if self._countries.contain(word):
                 name = self._countries.main_name(word)
@@ -124,31 +139,35 @@ class DiplomacyCounter(Counter):
         self._add_records(year, countries)
 
     @property
-    def total(self) -> dict[str, Count]:
+    def total(self) -> dict[str, clc.Counter]:
         return self._total
 
     @property
-    def annual(self) -> dict[int, dict[str, Count]]:
+    def annual(self) -> dict[int, dict[str, clc.Counter]]:
         return self._annual
 
-    def _add_records(self, year: int, countries: Count) -> None:
+    def _add_records(self, year: int, countries: clc.Counter) -> None:
+        """
+        Add new records.
+
+        -- PARAMETERS --
+        year: A year.
+        countries: A country list. These countries are mentioned together.
+        """
         for country in countries:
             for relation in countries:
                 if relation == country:
                     continue
-                self._init_dict(year, country, relation)
+                self._init_counts(year, country)
                 self._total[country][relation] += 1
                 self._annual[year][country][relation] += 1
 
-    def _init_dict(self, year: int, country: str, relation: str) -> None:
+    def _init_counts(self, year: int, country: str) -> None:
+        """
+        Initialize a counter to store records for a country.
+        """
         if country not in self._total:
-            self._total[country] = {}
-        if year not in self._annual:
-            self._annual[year] = {}
+            self._total[country] = clc.Counter()
         if country not in self._annual[year]:
-            self._annual[year][country] = {}
+            self._annual[year][country] = clc.Counter()
 
-        if relation not in self._total[country]:
-            self._total[country][relation] = 0
-        if relation not in self._annual[year][country]:
-            self._annual[year][country][relation] = 0
