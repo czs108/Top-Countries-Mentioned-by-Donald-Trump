@@ -3,15 +3,21 @@ from pathlib import Path
 
 
 class Location:
+    """
+    The geographical location.
+    """
     def __init__(self, latitude: float, longitude: float) -> None:
         self.latitude: float = latitude
         self.longitude: float = longitude
 
 
 class Container:
+    """
+    Store and check countries' information.
+    """
     def __init__(self, path: Path) -> None:
         """
-        Store and check countries' information.
+        Load the country list.
         """
         with path.open(encoding="utf-8") as file:
             countries = json.load(file)
@@ -30,12 +36,21 @@ class Container:
                     self._synonyms[names[i].upper()] = main_name
 
     def all(self) -> list[str]:
+        """
+        Get all countries.
+        """
         return list(self._locations.keys())
 
     def contain(self, name: str) -> bool:
+        """
+        Check whether a name is in the country list.
+        """
         return name.upper() in self._synonyms
 
     def location(self, name: str) -> Location:
+        """
+        Get a country's location.
+        """
         main_name = self.main_name(name)
         return self._locations[main_name] if main_name else None
 
