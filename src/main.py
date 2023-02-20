@@ -15,9 +15,9 @@ if TYPE_CHECKING:
 
 JSON_INDENT = 4
 
-data_dir = Path("..", "data")
+data_dir = Path(__file__).parent.parent.joinpath("data")
 
-countries = CountryContainer(Path("countries.json"))
+countries = CountryContainer(Path(__file__).parent.joinpath("countries.json"))
 
 
 def clean() -> None:

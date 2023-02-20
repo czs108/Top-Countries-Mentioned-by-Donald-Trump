@@ -1,5 +1,8 @@
 # Top Countries Mentioned by Donald Trump
 
+[![Python](badges/Python-3.10.svg)](https://www.python.org)
+[![License](badges/License-GPL-3.0.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
+
 ## About The Project
 
 ![Cover](../Cover.jpg)
@@ -12,7 +15,7 @@ All processes are finished by *Python*. There is no third-party data platform in
 
 ### Prerequisites
 
-- Install [*Python 3.10*](https://www.python.org/).
+- Install [*Python 3.11*](https://www.python.org).
 
 - Install all dependencies.
 
@@ -28,7 +31,7 @@ python main.py
 
 ## Data Collection
 
-The project contains three `.csv` datasets, all coming from [*Kaggle*](https://www.kaggle.com/). They are in the `data/origin` directory.
+The project contains three `.csv` datasets, all coming from [*Kaggle*](https://www.kaggle.com). They are in the `data/origin` directory.
 
 - [*Donald Trump*'s Tweets](https://www.kaggle.com/austinreese/trump-tweets)
 
@@ -98,7 +101,7 @@ Two statistics will be generated in this process and each statistic has two diff
 
 ### Sentence Segmentation
 
-The analysis is based on the sentence, so at first I use [*NLTK*](https://www.nltk.org/) to separate paragraphs into sentences.
+The analysis is based on the sentence, so at first I use [*NLTK*](https://www.nltk.org) to separate paragraphs into sentences.
 
 ![sentence-segment](images/sentence-segment.png)
 
@@ -128,13 +131,13 @@ All analysis results are saved as `.json` files in the `data/count` directory.
 
 ## Data Visualization
 
-The statistics are represented by three charts using [*pyecharts*](https://pyecharts.org/#/). All charts are in the `data/visualize` directory.
+The statistics are represented by three charts using [*pyecharts*](https://pyecharts.org). All charts are in the `data/visualize` directory.
 
 ### Stacked Bar Chart
 
 ![stacked-bar-chart](images/stacked-bar-chart.png)
 
-The [*pyecharts*](https://pyecharts.org/#/) allows the user to select and combine the data from different years by clicking the legend.
+The [*pyecharts*](https://pyecharts.org) allows the user to select and combine the data from different years by clicking the legend.
 
 ### Flow Map
 
@@ -146,22 +149,11 @@ The [*pyecharts*](https://pyecharts.org/#/) allows the user to select and combin
 
 ## Dependencies
 
-[*pandas*](https://pandas.pydata.org/)
-
-[*Natural Language Toolkit*](https://www.nltk.org/)
-
-[*spaCy*](https://spacy.io/)
-
-[*pyecharts*](https://pyecharts.org/#/)
+- [*pandas*](https://pandas.pydata.org)
+- [*Natural Language Toolkit*](https://www.nltk.org)
+- [*spaCy*](https://spacy.io)
+- [*pyecharts*](https://pyecharts.org)
 
 ## License
 
-Distributed under the *GNU General Public* License. See `LICENSE` for more information.
-
-## Contact
-
-***GitHub***: https://github.com/czs108/
-
-***E-Mail***: chenzs108@outlook.com
-
-***WeChat***: chenzs108
+Distributed under the *GNU General Public License*. See `LICENSE` for more information.

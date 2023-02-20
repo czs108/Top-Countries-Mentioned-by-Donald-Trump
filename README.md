@@ -1,5 +1,8 @@
 # Top Countries Mentioned by Donald Trump
 
+[![Python](docs/badges/Python-3.10.svg)](https://www.python.org)
+[![License](docs/badges/License-GPL-3.0.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
+
 ## About The Project
 
 ![Cover](Cover.jpg)
@@ -12,7 +15,7 @@ All processes are finished by *Python*. There is no third-party data platform in
 
 ### Prerequisites
 
-- Install [*Python 3.10*](https://www.python.org/).
+- Install [*Python 3.11*](https://www.python.org).
 
 - Install all dependencies.
 
@@ -28,7 +31,7 @@ python main.py
 
 ## Datasets
 
-The project contains three `.csv` datasets, all coming from [*Kaggle*](https://www.kaggle.com/). They are in the `data/origin` directory.
+The project contains three `.csv` datasets, all coming from [*Kaggle*](https://www.kaggle.com). They are in the `data/origin` directory.
 
 - [*Donald Trump*'s Tweets](https://www.kaggle.com/austinreese/trump-tweets)
 
@@ -64,22 +67,11 @@ See `docs/wiki.md` for the details.
 
 ## Dependencies
 
-[*pandas*](https://pandas.pydata.org/)
-
-[*Natural Language Toolkit*](https://www.nltk.org/)
-
-[*spaCy*](https://spacy.io/)
-
-[*pyecharts*](https://pyecharts.org/#/)
+- [*pandas*](https://pandas.pydata.org)
+- [*Natural Language Toolkit*](https://www.nltk.org)
+- [*spaCy*](https://spacy.io)
+- [*pyecharts*](https://pyecharts.org)
 
 ## License
 
-Distributed under the *GNU General Public* License. See `LICENSE` for more information.
-
-## Contact
-
-***GitHub***: https://github.com/czs108/
-
-***E-Mail***: chenzs108@outlook.com
-
-***WeChat***: chenzs108
+Distributed under the *GNU General Public License*. See `LICENSE` for more information.
