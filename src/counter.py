@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import TYPE_CHECKING
+from collections.abc import Sequence
 import collections as clc
 
 import nltk
@@ -7,9 +7,6 @@ import spacy
 
 from country import Container
 from presidential_term import BEGIN_YEAR, END_YEAR
-
-if TYPE_CHECKING:
-    from collections.abc import Sequence
 
 
 class Counter:

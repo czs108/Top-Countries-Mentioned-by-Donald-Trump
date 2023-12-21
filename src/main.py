@@ -1,16 +1,12 @@
 import json
 import logging
 from pathlib import Path
-from typing import TYPE_CHECKING
 
 from country import Container as CountryContainer
 from clean import PathTuple as CleanerPathTuple, Standard, Segment
-from counter import Director, NormalCounter, DiplomacyCounter
+from counter import Director, NormalCounter, DiplomacyCounter, Counter
 from visualize.loader import PathTuple as LoaderPathTuple, NormalLoader, DiplomacyLoader
 from visualize.graph import BarChart, Sankey, FlowMap
-
-if TYPE_CHECKING:
-    from counter import Counter
 
 
 JSON_INDENT = 4

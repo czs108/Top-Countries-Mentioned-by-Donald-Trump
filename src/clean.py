@@ -1,13 +1,10 @@
-from typing import TYPE_CHECKING
+from typing import TextIO
 from pathlib import Path
 import os
 
 import pandas as pd
 
 from presidential_term import BEGIN_YEAR, END_YEAR
-
-if TYPE_CHECKING:
-    from typing import TextIO
 
 
 class PathTuple:

@@ -1,11 +1,8 @@
 import json
 from pathlib import Path
-from typing import TYPE_CHECKING
+from collections import Counter
 
 import pandas as pd
-
-if TYPE_CHECKING:
-    from collections import Counter
 
 
 class PathTuple:
