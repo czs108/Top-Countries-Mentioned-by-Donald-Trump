@@ -1,7 +1,7 @@
 # Top Countries Mentioned by Donald Trump
 
-[![Python](docs/badges/Python-3.10.svg)](https://www.python.org)
-[![License](docs/badges/License-GPL-3.0.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
+[![Python](docs/badges/Python.svg)](https://www.python.org)
+![License](docs/badges/License-MIT.svg)
 
 ## About The Project
 
@@ -74,4 +74,4 @@ See `docs/wiki.md` for the details.
 
 ## License
 
-Distributed under the *GNU General Public License*. See `LICENSE` for more information.
+Distributed under the *MIT License*. See `LICENSE` for more information.
